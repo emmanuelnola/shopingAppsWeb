@@ -1,0 +1,18 @@
+
+<div class="articles-grid">
+
+   <div class="article-card" *ngFor="let article of articles" (click)="goToDetail(article)">
+
+      <div class="image-wrapper">
+        <img [src]="'http://51.254.138.51:8080' + article.images[0]" alt="{{ article.nom }}">
+       </div>
+
+       <!-- Description sous l'image -->
+      <div class="article-info">
+        <p class="description">{{ article.nom }}</p>
+        <p class="price">{{ article.prix }} FCFA</p>
+        <p>Quick View</p>
+      </div>
+
+   </div>
+</div>

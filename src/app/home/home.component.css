@@ -1,0 +1,610 @@
+
+
+
+/*------------------------------ css entete--*/
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Libre Bodoni",'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+  background-color: #f9f7f2;
+  color: #333;
+  min-height: 100vh;
+
+  background-image:
+    radial-gradient(circle at 15% 50%, rgba(255, 255, 255, 0.8) 0%, transparent 55%),
+    radial-gradient(circle at 85% 30%, rgba(255, 255, 255, 0.6) 0%, transparent 55%);
+}
+
+.container {
+  max-width: 1400px;
+/*  margin: 0 auto;*/
+
+}
+
+
+h1 {
+  font-size: 2.8rem;
+  color: #2c3e50;
+  margin-bottom: 15px;
+  position: relative;
+  display: inline-block;
+  font-weight: 300;
+  letter-spacing: 1px;
+}
+
+h1:after {
+  content: '';
+  position: absolute;
+  bottom: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100px;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, #e74c3c, transparent);
+  border-radius: 2px;
+}
+
+.subtitle {
+  font-size: 1.15rem;
+  color: #6c757d;
+  max-width: 700px;
+  margin: 25px auto 0;
+  line-height: 1.7;
+  font-weight: 300;
+}
+
+/* Mur de photos */
+.photo-wall {
+  position: relative;
+  min-height: 750px;
+
+  background-color: #f1ede3;
+
+  box-shadow:
+    inset 0 0 50px rgba(0, 0, 0, 0.05),
+    0 10px 40px rgba(0, 0, 0, 0.08);
+  border: 1px solid #e5dfd2;
+  overflow: hidden;
+}
+
+/* Texture de mur */
+.photo-wall:before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image:
+    linear-gradient(90deg, rgba(120, 80, 40, 0.03) 1px, transparent 1px),
+    linear-gradient(rgba(120, 80, 40, 0.03) 1px, transparent 1px);
+  background-size: 50px 50px;
+  z-index: 0;
+}
+
+/* Conteneur des photos */
+.photos-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 750px;
+  z-index: 1;
+}
+
+/* Style NATUREL des cartes photos - SANS CADRE BLANC */
+.photo-card {
+  position: absolute;
+  border-radius: 0px;
+  overflow: hidden;
+  transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  cursor: pointer;
+
+  border: none;
+  padding: 0;
+
+  transform-origin: center;
+}
+
+.photo-card:hover {
+  transform: translateY(-8px) scale(1.03) !important;
+  box-shadow:
+    0 25px 50px rgba(0, 0, 0, 0.25),
+    0 8px 20px rgba(0, 0, 0, 0.15);
+  z-index: 100 !important;
+}
+
+/* Effet "scotch" */
+.photo-pin {
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 40px;
+  height: 10px;
+  background: rgba(255, 255, 220, 0.95);
+  border-radius: 3px;
+  box-shadow:
+    0 2px 5px rgba(0, 0, 0, 0.25),
+    inset 0 1px 2px rgba(255, 255, 255, 0.7);
+  z-index: 2;
+}
+
+.photo-pin:before {
+  content: '';
+  position: absolute;
+  top: -6px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 8px;
+  height: 8px;
+  background: rgba(200, 200, 180, 0.95);
+  border-radius: 50%;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+}
+
+/* Contenu image */
+.photo-content {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  position: relative;
+}
+
+.photo-content:after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(to bottom, transparent 85%, rgba(0, 0, 0, 0.08) 100%);
+  pointer-events: none;
+}
+
+.photo-content img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.8s ease;
+}
+
+.photo-card:hover .photo-content img {
+  transform: scale(1.1);
+}
+
+/* Label des photos */
+.photo-label {
+  position: absolute;
+  bottom: 10px;
+  left: 0;
+  right: 0;
+  text-align: center;
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.9);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  background-color: rgba(0, 0, 0, 0.4);
+  padding: 5px 0;
+  z-index: 2;
+}
+
+/* Overlay de texte central */
+.center-text-overlay {
+  position: absolute;
+  top: 45%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 50;
+  text-align: center;
+  width: 100%;
+  max-width: 500px;
+  pointer-events: none;
+}
+
+.text-container {
+  padding: 10px 20px;
+
+  backdrop-filter: blur(4px);
+  pointer-events: auto;
+}
+
+.new-arrivals-text {
+  font-family: 'Avenir', 'Helvetica Neue', sans-serif;
+  color: #2c3e50;
+  margin-bottom: 30px;
+  line-height: 1;
+}
+
+.new {
+  display: block;
+  font-size: 3rem;
+  font-weight: 300;
+  /*color: #e74c3c;*/
+  letter-spacing: -2px;
+  margin-bottom: 5px;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.arrivals {
+  display: block;
+  font-size: 2.5rem;
+  font-weight: 250;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+}
+
+.shop-now-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%) ;
+  color: white;
+  font-size: 1rem;
+  font-weight: 200;
+  padding: 18px 40px;
+
+  text-decoration: none;
+  transition: all 0.4s ease;
+  letter-spacing: 1.5px;
+  box-shadow: 0 10px 25px rgba(44, 62, 80, 0.3);
+  border: none;
+  cursor: pointer;
+  pointer-events: auto;
+  z-index: 1000;
+}
+
+
+
+/* Compteur de photos */
+.photo-counter {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  margin: 30px auto;
+  flex-wrap: wrap;
+}
+
+.counter-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background-color: rgba(255, 255, 255, 0.9);
+  padding: 15px 25px;
+  border-radius: 50px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.counter-item i {
+  color: #e74c3c;
+  font-size: 1.2rem;
+}
+
+.counter-item span {
+  font-weight: 600;
+  color: #2c3e50;
+  font-size: 1.1rem;
+}
+
+/* Notice mobile */
+.mobile-notice {
+  background-color: rgba(52, 152, 219, 0.1);
+  border-left: 4px solid #3498db;
+  padding: 15px 20px;
+  margin: 25px auto;
+  border-radius: 8px;
+  max-width: 800px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  animation: pulse 2s infinite;
+}
+
+.mobile-notice i {
+  color: #3498db;
+  font-size: 1.5rem;
+  flex-shrink: 0;
+}
+
+.mobile-notice p {
+  color: #2c3e50;
+  margin: 0;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.8; }
+}
+
+/* Guide de disposition */
+.layout-guide {
+  background-color: rgba(255, 255, 255, 0.9);
+  border-radius: 12px;
+  padding: 30px;
+  margin-top: 40px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.layout-guide h3 {
+  color: #2c3e50;
+  margin-bottom: 25px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.layout-guide h3 i {
+  color: #e74c3c;
+}
+
+.guide-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+}
+
+.guide-item {
+  text-align: center;
+  padding: 20px;
+  background-color: rgba(248, 249, 250, 0.8);
+  border-radius: 10px;
+  transition: transform 0.3s ease;
+}
+
+.guide-item:hover {
+  transform: translateY(-5px);
+  background-color: rgba(231, 76, 60, 0.05);
+}
+
+.guide-icon {
+  width: 50px;
+  height: 50px;
+  background: linear-gradient(135deg, #e74c3c, #c0392b);
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin: 0 auto 15px;
+  box-shadow: 0 5px 15px rgba(231, 76, 60, 0.2);
+}
+
+.guide-item p {
+  color: #2c3e50;
+  margin: 0;
+  font-weight: 600;
+}
+
+.guide-item small {
+  display: block;
+  color: #6c757d;
+  font-weight: normal;
+  margin-top: 5px;
+  font-size: 0.9rem;
+}
+
+/* Animation d'apparition */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.fade-in {
+  animation: fadeIn 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+/* Footer */
+
+.highlight {
+  color: #e74c3c;
+  font-weight: 600;
+  position: relative;
+  display: inline-block;
+}
+
+.highlight:after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background-color: #e74c3c;
+  opacity: 0.3;
+}
+
+/* RESPONSIVE DESIGN */
+@media (max-width: 1200px) {
+
+
+  .photo-wall {
+    min-height: 800px;
+  }
+
+  .new {
+    font-size: 3.5rem;
+  }
+
+  .arrivals {
+    font-size: 3rem;
+  }
+}
+
+@media (max-width: 992px) {
+  .photo-wall {
+    min-height: 700px;
+  }
+
+  .text-container {
+    padding: 30px 40px;
+    max-width: 450px;
+  }
+
+  .new {
+    font-size: 3rem;
+  }
+
+  .arrivals {
+    font-size: 2.5rem;
+  }
+
+  .shop-now-btn {
+    font-size: 1.1rem;
+    padding: 15px 35px;
+  }
+}
+
+@media (max-width: 768px) {
+  .photo-wall {
+    min-height: 600px;
+    margin: 30px auto;
+    padding: 30px 15px;
+  }
+
+  h1 {
+    font-size: 2.2rem;
+  }
+
+  .subtitle {
+    font-size: 1rem;
+  }
+
+  .text-container {
+    padding: 25px 30px;
+    max-width: 380px;
+  }
+
+  .new {
+    font-size: 2.5rem;
+  }
+
+  .arrivals {
+    font-size: 2rem;
+  }
+
+  .shop-now-btn {
+    font-size: 1rem;
+    padding: 12px 30px;
+  }
+
+  .photos-container {
+    min-height: 520px;
+  }
+
+  /* Sur mobile, ajuster les positions sans couper */
+  .photo-card {
+    /* Toutes les photos restent visibles */
+  }
+
+  .guide-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 576px) {
+  body {
+    padding: 10px;
+  }
+
+  .photo-wall {
+    min-height: 550px;
+    padding: 20px 10px;
+  }
+
+  .photos-container {
+    min-height: 480px;
+  }
+
+  h1 {
+    font-size: 1.9rem;
+  }
+
+  .text-container {
+    padding: 20px 25px;
+    max-width: 320px;
+  }
+
+  .new {
+    font-size: 2.2rem;
+  }
+
+  .arrivals {
+    font-size: 1.8rem;
+  }
+
+  .shop-now-btn {
+    font-size: 0.95rem;
+    padding: 10px 25px;
+    gap: 10px;
+  }
+
+  .container {
+    padding: 10px;
+  }
+
+  .photo-counter {
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+  }
+
+  .guide-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .layout-guide {
+    padding: 20px;
+  }
+}
+
+@media (max-width: 400px) {
+  .photo-wall {
+    min-height: 500px;
+  }
+
+  .text-container {
+    padding: 15px 20px;
+    max-width: 280px;
+  }
+
+  .new {
+    font-size: 1.9rem;
+  }
+
+  .arrivals {
+    font-size: 1.6rem;
+  }
+
+  .shop-now-btn {
+    font-size: 0.9rem;
+    padding: 8px 20px;
+  }
+
+  .photo-pin {
+    width: 35px;
+    height: 8px;
+  }
+
+}
+
+

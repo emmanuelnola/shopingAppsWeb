@@ -1,0 +1,61 @@
+
+
+
+
+<div class="monFooter">
+
+  <footer class="footer">
+
+    <div class="footer-grid">
+
+      <!-- COLONNE 1 -->
+      <div class="footer-col">
+        <h3 (click)="toggle(1)">
+          Entreprise
+          <span class="arrow">{{ openSection === 1 ? '−' : '+' }}</span>
+        </h3>
+
+        <ul [class.open]="openSection === 1">
+          <li>À propos</li>
+          <li>Carrières</li>
+          <li>Presse</li>
+        </ul>
+      </div>
+
+      <!-- COLONNE 2 -->
+      <div class="footer-col">
+        <h3 (click)="toggle(2)">
+          Support
+          <span class="arrow">{{ openSection === 2 ? '−' : '+' }}</span>
+        </h3>
+
+        <ul [class.open]="openSection === 2">
+          <li>Aide</li>
+          <li>Contact</li>
+          <li>FAQ</li>
+        </ul>
+      </div>
+
+      <!-- COLONNE 3 -->
+      <div class="footer-col">
+        <h3 (click)="toggle(3)">
+          Légal
+          <span class="arrow">{{ openSection === 3 ? '−' : '+' }}</span>
+        </h3>
+
+        <ul [class.open]="openSection === 3">
+          <li>Conditions</li>
+          <li>Confidentialité</li>
+          <li>Cookies</li>
+        </ul>
+      </div>
+
+    </div>
+
+    <div class="footer-bottom">
+      © 2026 Mon Application
+    </div>
+
+  </footer>
+
+</div>

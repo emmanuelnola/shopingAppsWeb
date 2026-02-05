@@ -1,1 +1,36 @@
-/* You can add global styles to this file, and also import other style files */
+
+body {
+  font-family: "Libre Bodoni", sans-serif;
+}
+
+/*body{
+ background-color:#EAE2D2;
+}*/
+
+
+*{
+  padding:0;
+  margin:0;
+  box-size:border;
+  /*font-family: "Roboto", sans-serif;*/
+}
+
+
+
+a{
+  text-decoration:0;
+  color:#000;
+  font-weight:400;
+  font-size:30px;
+  letter-spacing: 4px;
+  text-transform:uppercase;
+}
+
+a i{
+  font-size:40px;
+  letter-spacing: 4px;
+  text-transform:uppercase;
+}
+
+
+

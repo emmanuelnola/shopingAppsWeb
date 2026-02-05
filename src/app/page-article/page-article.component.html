@@ -1,0 +1,114 @@
+<div class="gallery-container">
+
+  <!-- MINIATURES -->
+  <div class="thumbs-container">
+    <button class="thumb-nav" (click)="scrollThumbs('up')">▲</button>
+
+    <div class="thumbs" #thumbs>
+      <img
+        *ngFor="let img of article.images; let i = index"
+        [src]="'http://51.254.138.51:8080'+img"
+        [class.active]="i === selectedIndex"
+        (click)="selectImage(i)">
+    </div>
+
+    <button class="thumb-nav" (click)="scrollThumbs('down')">▼</button>
+  </div>
+
+  <!-- IMAGE PRINCIPALE -->
+  <div class="main-image">
+    <button class="arrow left" (click)="prev()">❮</button>
+
+    <img
+      [src]="'http://51.254.138.51:8080'+article.images[selectedIndex]"
+      (click)="openFullscreen()">
+
+    <button class="arrow right" (click)="next()">❯</button>
+  </div>
+
+  <!-- INFOS ARTICLE -->
+  <div class="article-info">
+    <span class="category">{{ article.categorie }}</span>
+    <h1>{{ article.nom }}</h1>
+    <span class="category">prix unitaire</span>
+    <p class="price">{{ article.prix | number }} FCFA</p>
+    <span class="category">taille</span>
+    <div class="sizes">
+      <span *ngFor="let t of article.tailles">{{ t }}</span>
+    </div>
+    <div class="sizes">
+      <span *ngFor="let t of article.colors">{{ t }}</span>
+    </div>
+
+    <button class="add-cart-btn" (click)="addToCart()">
+      Ajouter au panier
+    </button>
+    <div class="share-container">
+      <span class="share-text">Share</span>
+
+      <div class="share-icons">
+        <a href="#" class="icon facebook">
+          <i class="fa-brands fa-facebook-f"></i>
+        </a>
+
+        <a href="#" class="icon instagram">
+          <i class="fa-brands fa-instagram"></i>
+        </a>
+
+        <a href="#" class="icon whatsapp">
+          <i class="fa-brands fa-whatsapp"></i>
+        </a>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+<!-- FULLSCREEN -->
+<div class="fullscreen" *ngIf="fullscreen">
+  <button class="close" (click)="closeFullscreen()">✕</button>
+  <button class="fs-arrow left" (click)="prev()">❮</button>
+
+  <img class="fs-image" [src]="'http://51.254.138.51:8080'+article.images[selectedIndex]">
+
+  <button class="fs-arrow right" (click)="next()">❯</button>
+</div>
+
+
+
+
+
+<div class="container">
+
+  <h2>Catégorie : {{ categorie }}</h2>
+
+  <div class="grid">
+    <div class="card" *ngFor="let a of articles">
+
+      <img
+        *ngIf="a.images.length"
+        [src]="'http://51.254.138.51:8080' + a.images[0]"
+        alt="article">
+
+      <h3>{{ a.nom }}</h3>
+      <p class="price">{{ a.prix }} FCFA</p>
+
+    </div>
+  </div>
+
+  <div class="pagination">
+    <button (click)="prevPage()" [disabled]="page === 0">
+      ⬅ Précédent
+    </button>
+
+    <span>Page {{ page + 1 }} / {{ totalPages }}</span>
+
+    <button
+      (click)="nextPage()"
+      [disabled]="page === totalPages - 1">
+      Suivant ➡
+    </button>
+  </div>
+
+</div>

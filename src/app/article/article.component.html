@@ -1,0 +1,130 @@
+<div class="admin">
+
+  <h2>Administration des articles</h2>
+
+  <!-- FILTRE -->
+  <div class="filter">
+    <select [(ngModel)]="selectedCategorie" (change)="loadByCategorie()">
+      <option value="">Toutes les catégories</option>
+      <option *ngFor="let c of categories" [value]="c">{{c}}</option>
+    </select>
+  </div>
+
+  <div class="form-card">
+
+    <input type="text" placeholder="Nom"
+           [(ngModel)]="articleForm.nom">
+
+    <input type="number" placeholder="Prix"
+           [(ngModel)]="articleForm.prix">
+
+    <!-- STATUS -->
+    <div class="status-wrapper">
+
+      <input
+        type="text"
+        placeholder="Choisir un statut"
+        readonly
+        [value]="articleForm.status"
+        (click)="openStatusList()">
+
+      <div class="dropdown" *ngIf="showStatusList">
+        <div class="dropdown-item"
+             *ngFor="let s of statuses"
+             (click)="chooseStatus(s.value)">
+          {{ s.label }}
+        </div>
+      </div>
+
+    </div>
+
+
+
+
+    <!-- CATEGORIE -->
+    <div class="categorie-wrapper">
+
+      <input
+        type="text"
+        placeholder="Choisir une catégorie"
+        readonly
+        [value]="articleForm.categorie || ''"
+        (click)="openCategorieList()">
+
+      <div class="categorie-dropdown" *ngIf="showCategorieList">
+        <div
+          class="categorie-option"
+          *ngFor="let cat of categories"
+          (click)="chooseCategorie(cat)">
+          {{ cat }}
+        </div>
+      </div>
+
+    </div>
+
+
+    <input
+      type="text"
+      placeholder="Tailles (M,L,XL)"
+      (input)="onTaillesChange($event)">
+
+    <!-- ✅ NOUVEAU BLOC COULEURS -->
+    <div class="color-picker">
+      <input type="text"
+             placeholder="Nom couleur"
+             [(ngModel)]="tempColor.name">
+
+      <input type="color"
+             [(ngModel)]="tempColor.rgba">
+
+      <button type="button" (click)="addColor()">Ajouter</button>
+    </div>
+
+    <div class="colors-preview">
+    <span *ngFor="let c of articleForm.colors"
+          [style.background]="c.rgba"
+          class="color-chip"
+          (click)="removeColor(c)">
+      {{ c.name }}
+    </span>
+    </div>
+
+    <!-- Images -->
+    <input type="file" multiple (change)="onFileChange($event)">
+
+    <button class="btn-primary" (click)="saveArticle()">Ajouter</button>
+  </div>
+
+
+  <!-- LISTE -->
+  <div class="grid">
+    <div class="card" *ngFor="let a of articles">
+
+      <img class="main-img" [src]="'http://51.254.138.51:8080' +a.images[0]">
+
+      <div class="gallery">
+        <img *ngFor="let img of a.images" [src]="img">
+      </div>
+
+      <h4>{{a.nom}}</h4>
+      <p>{{a.prix}} FCFA</p>
+      <span class="badge" [class.new]="a.status==='NEW'"
+            [class.solde]="a.status==='SOLDE'">
+        {{a.status}}
+      </span>
+
+      <div class="actions">
+        <button (click)="editArticle(a)">✏</button>
+        <button (click)="deleteArticle(a.id!)">🗑</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- PAGINATION -->
+  <div class="pagination">
+    <button (click)="changePage(-1)" [disabled]="page===0">◀</button>
+    <span>Page {{page+1}} / {{totalPages}}</span>
+    <button (click)="changePage(1)" [disabled]="page+1>=totalPages">▶</button>
+  </div>
+
+</div>

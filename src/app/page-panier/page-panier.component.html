@@ -1,0 +1,60 @@
+<div class="overlay" *ngIf="Panieropen " (click)="closePanierPanel()"></div>
+
+<div class="slide-panel" [class.open]="Panieropen">
+
+  <!-- Header -->
+  <div class="panel-header">
+    <h3>Mon panier</h3>
+    <!-- Si panier vide -->
+    <div *ngIf="items.length === 0">
+      Votre panier est vide.
+    </div>
+    <button class="close-btn" (click)="closePanierPanel()">✕</button>
+  </div>
+
+  <!-- LISTE SCROLLABLE -->
+  <div class="articles-container">
+
+    <div class="article-item" *ngFor="let item of items" >
+      <img [src]=" 'http://51.254.138.51:8080' + item.images[0]" alt="article">
+
+      <div class="info">
+
+        <!-- Nom du produit -->
+        <h3>{{ item.nom }}</h3>
+
+        <!-- Prix en FCFA -->
+        <p>{{ item.prix | currency:'XAF':'symbol-narrow' }}</p>
+
+        <!-- Gestion des quantités -->
+        <div class="qty">
+          <button (click)="updateQty(item.id, item.quantity - 1)">−</button>
+          <span>{{ item.quantity }}</span>
+          <button (click)="updateQty(item.id, item.quantity + 1)">+</button>
+        </div>
+
+        <!-- Supprimer -->
+        <button class="remove" (click)="remove(item.id)"> <i class="fa fa-trash-o" aria-hidden="true"></i></button>
+
+      </div>
+    </div>
+
+  </div>
+
+  <div class="cout_message">
+      <h3 class>TOTAL  {{total}}</h3>
+
+       <button class="btn-add-cart"
+          (click)="sendMessage()">
+          <i class="fab fa-whatsapp"></i> Envoyez votre commande
+       </button>
+  </div>
+</div>
+
+
+
+
+
+
+
+
