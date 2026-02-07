@@ -1,11 +1,62 @@
-import {Router, NavigationEnd } from '@angular/router';
+import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { Component, HostListener,OnInit, ElementRef, ViewChild } from '@angular/core';
-import { filter } from 'rxjs/operators';
-import { trigger, state, style, transition, animate } from '@angular/animations';
-import { RouterOutlet } from '@angular/router';
+import { Component, HostListener, OnInit, OnDestroy, ElementRef, ViewChild, AfterViewInit } from '@angular/core';
+import { RouterOutlet, RouterLink } from '@angular/router';
+import { ScrollingModule } from '@angular/cdk/scrolling';
 import { ArticleService } from '../services/article.service';
 import { Article } from '../models/article.model';
+
+/** Données de test pour le carousel New Arrivals (images dans /assets) */
+function getMockNewArrivalsByTab(): Article[][] {
+  const base = (id: number, nom: string, prix: number, categorie: string, img: string): Article => ({
+    id,
+    nom,
+    prix,
+    categorie,
+    tailles: ['S', 'M', 'L'],
+    colors: [{ name: 'Noir', rgba: '0,0,0' }, { name: 'Blanc', rgba: '255,255,255' }],
+    status: 'NEW',
+    images: [img],
+  });
+  const img = (name: string) => name;
+  return [
+    // Drop 10
+    [
+      base(1, 'Devon Skort Set', 99900, 'drop-10', img('culotte.jpg')),
+      base(2, 'Elora Tennis Skort Set', 120400, 'drop-10', img('culotte1.jpg')),
+      base(3, 'Elowen Set', 88150, 'drop-10', img('culotte2.jpg')),
+      base(4, 'Freya Skort Set', 95400, 'drop-10', img('shirt.jpg')),
+      base(5, 'Luna Drop Set', 78900, 'drop-10', img('rose.jpg')),
+      base(6, 'Nova Collection', 110200, 'drop-10', img('derriere.jpg')),
+      base(7, 'Aria Set', 87500, 'drop-10', img('gobelet.jpg')),
+      base(8, 'Bella Drop 10', 102000, 'drop-10', img('blackbird.jpg')),
+    ],
+    // Sets
+    [
+      base(10, 'Classic Set Noir', 89900, 'set', img('culotte1 - Copie.jpg')),
+      base(11, 'Set Sport', 112000, 'set', img('culotte2 - Copie.jpg')),
+      base(12, 'Set Élégant', 76500, 'set', img('IMG-20251207-WA0002.jpg')),
+      base(13, 'Set Weekend', 98800, 'set', img('IMG-20251207-WA0003.jpg')),
+      base(14, 'Set Essential', 84500, 'set', img('IMG-20251207-WA0004.jpg')),
+      base(15, 'Set Modern', 105600, 'set', img('matos.jpg')),
+      base(16, 'Set Rose', 92000, 'set', img('rose.jpg')),
+      base(17, 'Set Signature', 118000, 'set', img('Capture.JPG')),
+    ],
+    // Tracksuit
+    [
+      base(20, 'Tracksuit Grey', 125000, 'tracksuit', img('shirt.jpg')),
+      base(21, 'Tracksuit Black', 132000, 'tracksuit', img('blackbird.jpg')),
+      base(22, 'Tracksuit Navy', 118500, 'tracksuit', img('IMG-20251207-WA0010.jpg')),
+      base(23, 'Tracksuit Rose', 99500, 'tracksuit', img('rose.jpg')),
+      base(24, 'Tracksuit Sport', 108000, 'tracksuit', img('matos.jpg')),
+      base(25, 'Tracksuit Essential', 87500, 'tracksuit', img('derriere.jpg')),
+      base(26, 'Tracksuit Premium', 145000, 'tracksuit', img('culotte.jpg')),
+      base(27, 'Tracksuit Classic', 102000, 'tracksuit', img('gobelet.jpg')),
+    ],
+  ];
+}
+
+const MOCK_NEW_ARRIVALS = getMockNewArrivalsByTab();
 
 /*objt me permettant de positionner une photo */
 interface PhotoCard {
@@ -23,25 +74,45 @@ interface PhotoCard {
   overlapGroup?: 'left' | 'right' | 'center' | 'bottom';
 }
 
+/** Onglets New Arrivals */
+const NEW_ARRIVALS_TABS = [
+  { label: 'Drop 10', slug: 'drop-10' },
+  { label: 'Sets', slug: 'set' },
+  { label: 'Tracksuit', slug: 'tracksuit' },
+];
+
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [RouterOutlet ,CommonModule],
+  imports: [RouterOutlet, RouterLink, CommonModule, ScrollingModule],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
+export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 
-
-
-export class HomeComponent {
-
-  page=0;
-  size=8;
+  page = 0;
+  size = 12;
 
   photos: PhotoCard[] = [];
   leftGroupPhotos: PhotoCard[] = [];
   rightGroupPhotos: PhotoCard[] = [];
   isMobile: boolean = false;
+
+  // New Arrivals: tabs + carousel
+  newArrivalsTabs = NEW_ARRIVALS_TABS;
+  activeTabIndex = 0;
+  productsByTab: Article[][] = [[], [], []];
+  loadingTab: number | null = null;
+  /** true = utiliser les données de test (images du projet), false = appeler l’API */
+  useMockNewArrivals = true;
+  carouselScrollProgress = 0;
+  /** Défilement auto : pause quand l'utilisateur survole le carousel */
+  carouselAutoScrollPaused = false;
+  private carouselAutoScrollInterval: ReturnType<typeof setInterval> | null = null;
+  private readonly carouselAutoScrollDelayMs = 4000;
+  private readonly carouselScrollStepPx = 240;
+
+  @ViewChild('carouselScroll', { static: false }) carouselScroll!: ElementRef<HTMLDivElement>;
 
       // URLs d'images naturelles (Unsplash)
       private photoUrls = [
@@ -55,58 +126,122 @@ export class HomeComponent {
 
 
 
-  constructor(private router: Router,private articleService: ArticleService) {
-
-       this.articleService
-                       .getByCategorie('set', this.page, this.size)
-                        .subscribe(res => {
-
-                         /* this.articlesData.Set = res.content;*/
-
-                        });
-
-                       this.articleService.getByCategorie('leggings', this.page, this.size)
-                                              .subscribe(res => {
-                                               /* this.articlesData.Leggings = res.content;*/
-
-                                              });
-
-                       this.articleService.getByCategorie('trainers', this.page, this.size)
-                                           .subscribe(res => {
-                                         /*   this.articlesData.Trainers = res.content;*/
-                                            });
-
-       this.articleService.getArticles( this.page, 16)
-                               .subscribe(res => {
-                                 /*this.Alls= res.content;*/
-                              /*   this.articlesData.Sacs = res.content;*/
-
-                               });
-  }
+  constructor(private router: Router, private articleService: ArticleService) {}
 
 
 
 
 
-   // Fonction appelée quand on clique sur un article
-    goToDetail(article: Article) {
-      // Redirection vers /detail/1 (exemple)
+  goToDetail(article: Article) {
+    if (article.id != null) {
       this.router.navigate(['/detail', article.id]);
     }
+  }
 
-    goToArticles(message:string){
-         this.router.navigate(['/articles', message]);
+  goToArticles(message: string) {
+    this.router.navigate(['/articles', message]);
+  }
+
+  setActiveTab(index: number) {
+    this.activeTabIndex = index;
+    this.loadProductsForTab(index);
+    const el = this.carouselScroll?.nativeElement;
+    if (el) {
+      el.scrollTo({ left: 0, behavior: 'smooth' });
+      this.onCarouselScroll();
+    }
+  }
+
+  loadProductsForTab(index: number) {
+    if (this.useMockNewArrivals) {
+      console.log('useMockNewArrivals', this.useMockNewArrivals);
+      this.productsByTab = MOCK_NEW_ARRIVALS.map(tab => [...tab]);
+      this.loadingTab = null;
+      return;
+    }
+    const slug = this.newArrivalsTabs[index].slug;
+    this.loadingTab = index;
+    this.articleService.getByCategorie(slug, this.page, this.size).subscribe({
+      next: (res) => {
+        this.productsByTab[index] = res.content ?? [];
+        this.loadingTab = null;
+      },
+      error: () => {
+        this.productsByTab[index] = [];
+        this.loadingTab = null;
       }
+    });
+  }
 
+  onCarouselScroll() {
+    const el = this.carouselScroll?.nativeElement;
+    if (!el) return;
+    const maxScroll = el.scrollWidth - el.clientWidth;
+    this.carouselScrollProgress = maxScroll <= 0 ? 0 : el.scrollLeft / maxScroll;
+  }
 
+  /** Avance le carousel d’un pas (une carte), en boucle. */
+  private stepCarouselAutoScroll(): void {
+    if (this.carouselAutoScrollPaused) return;
+    const el = this.carouselScroll?.nativeElement;
+    if (!el) return;
+    const maxScroll = el.scrollWidth - el.clientWidth;
+    if (maxScroll <= 0) return;
+    const next = el.scrollLeft + this.carouselScrollStepPx;
+    el.scrollTo({ left: next >= maxScroll ? 0 : next, behavior: 'smooth' });
+    this.onCarouselScroll();
+  }
 
- @ViewChild('scrollContainer', { static: true })
+  startCarouselAutoScroll(): void {
+    this.stopCarouselAutoScroll();
+    this.carouselAutoScrollInterval = setInterval(
+      () => this.stepCarouselAutoScroll(),
+      this.carouselAutoScrollDelayMs
+    );
+  }
+
+  stopCarouselAutoScroll(): void {
+    if (this.carouselAutoScrollInterval) {
+      clearInterval(this.carouselAutoScrollInterval);
+      this.carouselAutoScrollInterval = null;
+    }
+  }
+
+  ngOnDestroy(): void {
+    this.stopCarouselAutoScroll();
+  }
+
+  getProductImage(article: Article): string {
+    if (article.images?.length) {
+      const img = article.images[0];
+      return img.startsWith('http') || img.startsWith('/') ? img : `/assets/${img}`;
+    }
+    return '/assets/logo.jpg';
+  }
+
+  formatPrice(prix: number): string {
+    return new Intl.NumberFormat('en-NG', { style: 'currency', currency: 'NGN', minimumFractionDigits: 2 }).format(prix);
+  }
+
+  @ViewChild('scrollContainer', { static: true })
   scrollContainer!: ElementRef<HTMLDivElement>;
 
- ngOnInit() {
-     this.checkMobile();
-       this.initializePhotos();
- }
+  ngOnInit() {
+    this.checkMobile();
+    this.initializePhotos();
+    this.loadProductsForTab(0);
+  }
+
+  ngAfterViewInit(): void {
+    const el = this.carouselScroll?.nativeElement;
+    if (el) {
+      el.addEventListener('scroll', () => this.onCarouselScroll());
+      this.onCarouselScroll();
+      el.addEventListener('mouseenter', () => (this.carouselAutoScrollPaused = true));
+      el.addEventListener('mouseleave', () => (this.carouselAutoScrollPaused = false));
+      this.startCarouselAutoScroll();
+    }
+  }
 
      @HostListener('window:resize')
      onResize(): void {

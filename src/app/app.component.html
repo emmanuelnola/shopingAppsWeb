@@ -95,7 +95,7 @@
     </a>
 
     <a routerLink="/admint" class="cart-icon">
-      <i class="fa fa-search" ></i>
+      <i class="far fa-heart" ></i>
     </a>
 
     <a routerLink="/cart" class="cart-icon" (click)="openPanierPanel()">
@@ -191,7 +191,7 @@
 
 
         <div class="submenu-level2" *ngIf="activeSubMenu === 'Gym Essentials'">
-          <div class="submenup-link" click)="goToArticles('gymwear')">Gym wear</div>
+          <div class="submenup-link" (click)="goToArticles('gymwear')">Gym wear</div>
           <div class="submenup-link" (click)="goToArticles('sportsbra')">Sport's Bra</div>
           <div class="submenup-link" (click)="goToArticles('tennis')">Tennis</div>
           <div class="submenup-link" (click)="goToArticles('mats')">Mats</div>

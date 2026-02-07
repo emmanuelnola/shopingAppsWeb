@@ -1,13 +1,35 @@
 
-
-
-/*------------------------------ css entete--*/
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: "Libre Bodoni",'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+/* Carousel: masquer la scrollbar */
+.scrollbar-hide {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 }
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* Restaurer Font Awesome dans le home (sinon * { font-family } masque les icônes) */
+.fa,
+.far,
+.fas,
+.fab,
+.fa-solid,
+.fa-regular,
+.fa-brands {
+  font-family: "Font Awesome 6 Free" !important;
+}
+.far,
+.fa-regular {
+  font-weight: 400;
+}
+.fas,
+.fa-solid,
+.fab,
+.fa-brands {
+  font-weight: 900;
+}
+
+
 
 body {
   background-color: #f9f7f2;

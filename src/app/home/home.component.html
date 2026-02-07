@@ -1,110 +1,102 @@
+<!-- Hero -->
+<div
+  class="h-screen w-full bg-cover bg-center"
+  style="background-image: url('/assets/bacground-home.png');">
+  <a href="https://berbiebeauty.com/product-category/drop-10/" class="w-full h-screen block cursor-pointer"></a>
+</div>
 
-<div class="container">
+<!-- New Arrivals: titre + tabs + carousel -->
+<section class="w-full py-12 md:py-16">
+  <div class="max-w-6xl !mx-auto px-4">
+    <h2 class="text-3xl md:text-4xl font-light text-center text-[#2c3e50] tracking-wide mb-8">
+      New Arrivals
+    </h2>
 
-  <main>
-    <div class="photo-wall">
-      <div class="photos-container">
-        <!-- Photo centrale en haut -->
+    <!-- Tabs -->
+    <nav class="flex justify-center gap-8 md:gap-12 mb-10" role="tablist">
+      @for (tab of newArrivalsTabs; track tab.slug; let i = $index) {
+        <button
+          type="button"
+          role="tab"
+          [attr.aria-selected]="activeTabIndex === i"
+          (click)="setActiveTab(i)"
+          class="pb-2 text-sm md:text-base font-medium tracking-wider uppercase transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[#e8b4b8]"
+          [class.text-[#2c3e50]]="activeTabIndex !== i"
+          [class.text-[#2c3e50]]="activeTabIndex === i"
+          [class.border-b-2]="activeTabIndex === i"
+          [class.border-[#e8b4b8]]="activeTabIndex === i"
+          [class.border-transparent]="activeTabIndex !== i">
+          {{ tab.label }}
+        </button>
+      }
+    </nav>
+
+    <!-- Carousel -->
+    <div class="relative">
+      <div
+        #carouselScroll
+        class="carousel-scroll flex gap-4 md:gap-6 overflow-x-auto overflow-y-hidden pb-2 snap-x snap-mandatory scroll-smooth scrollbar-hide"
+        (scroll)="onCarouselScroll()">
+        @if (loadingTab === activeTabIndex) {
+          <div class="flex items-center justify-center w-full min-h-[280px] text-[#6c757d]">
+            Chargement…
+          </div>
+        } @else {
+          @for (article of productsByTab[activeTabIndex]; track $index) {
+            <article
+              class="flex-shrink-0 w-[220px] md:w-[260px] snap-start bg-white overflow-hidden transition-shadow">
+              <div class="relative group">
+                <a [routerLink]="['/detail', article.id]" class="block aspect-square">
+                  <img
+                    [src]="getProductImage(article)"
+                    [alt]="article.nom"
+                    class="w-full object-cover h-[324px]" />
+                </a>
+                <!-- Overlay au survol : barre noire Quick View en haut + boutons -->
+                <div class="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none flex flex-col">
+                  <!-- Barre noire Quick View en haut -->
+                  <a
+                    [routerLink]="['/detail', article.id]"
+                    class="flex items-center !mt-auto justify-center gap-2 w-full bg-black py-3 text-white text-sm font-medium tracking-widest uppercase pointer-events-auto hover:bg-gray-900 transition-colors">
+                    <i class="fa fa-eye"></i>
+                    <span>Quick View</span>
+                  </a>
+                  <!-- Boutons coin supérieur droit -->
+                  <div class="absolute top-3 right-3 flex flex-col gap-2 pointer-events-auto">
+                    <button type="button" class="w-10 h-10 rounded-full bg-white border border-black flex items-center justify-center hover:bg-gray-100 transition-colors" aria-label="Favoris">
+                      <i class="far fa-heart text-black"></i>
+                    </button>
+                    <button type="button" class="w-10 h-10 rounded-full bg-white border border-black flex items-center justify-center hover:bg-gray-100 transition-colors" aria-label="Ajouter au panier">
+                      <i class="fa fa-lock text-black"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <div class="!py-6 px-6 text-center">
+                <h3 class="font-medium text-[#2c3e50] text-sm md:text-base uppercase tracking-wide line-clamp-1">
+                  {{ article.nom }}
+                </h3>
+                <p class="mt-1 text-[#2c3e50] font-medium">
+                  {{ formatPrice(article.prix) }}
+                </p>
+                <a
+                  [routerLink]="['/detail', article.id]"
+                  class="inline-block mt-2 text-sm text-[#767676] hover:text-[#767676] underline underline-offset-2">
+                  Quick View
+                </a>
+              </div>
+            </article>
+          }
+        }
+      </div>
+
+      <!-- Indicateur de scroll (ligne grise + segment rose qui se déplace) -->
+      <div class="mt-6 h-0.5 w-full max-w-md !mx-auto bg-gray-300 rounded overflow-visible relative">
         <div
-          class="photo-card fade-in photo-center-top"
-          [style.left]="photos[0].left"
-          [style.top]="photos[0].top"
-          [style.width]="photos[0].width"
-          [style.height]="photos[0].height"
-          [style.transform]="'rotate(' + photos[0].rotation + 'deg)'"
-          [style.zIndex]="photos[0].zIndex"
-          [style.animationDelay]="photos[0].animationDelay"
-
-        >
-          <div class="photo-content">
-            <img [src]="photos[0].url" [alt]="'Photo ' + photos[0].id" loading="lazy">
-          </div>
-          <div class="photo-pin"></div>
-        </div>
-
-        <!-- Groupe gauche - 2 photos superposées -->
-        <div class="photo-group-left">
-          <div
-            *ngFor="let photo of leftGroupPhotos"
-            class="photo-card fade-in"
-            [style.left]="photo.left"
-            [style.top]="photo.top"
-            [style.width]="photo.width"
-            [style.height]="photo.height"
-            [style.transform]="'rotate(' + photo.rotation + 'deg)'"
-            [style.zIndex]="photo.zIndex"
-            [style.animationDelay]="photo.animationDelay"
-
-          >
-            <div class="photo-content">
-              <img [src]="photo.url" [alt]="'Photo ' + photo.id" loading="lazy">
-            </div>
-            <div class="photo-pin"></div>
-          </div>
-        </div>
-
-        <!-- Groupe droit - 2 photos superposées -->
-        <div class="photo-group-right">
-          <div
-            *ngFor="let photo of rightGroupPhotos"
-            class="photo-card fade-in"
-            [style.left]="photo.left"
-            [style.top]="photo.top"
-            [style.width]="photo.width"
-            [style.height]="photo.height"
-            [style.transform]="'rotate(' + photo.rotation + 'deg)'"
-            [style.zIndex]="photo.zIndex"
-            [style.animationDelay]="photo.animationDelay"
-
-          >
-            <div class="photo-content">
-              <img [src]="photo.url" [alt]="'Photo ' + photo.id" loading="lazy">
-            </div>
-            <div class="photo-pin"></div>
-          </div>
-        </div>
-
-        <!-- Photo en bas à droite -->
-        <div
-          class="photo-card fade-in photo-bottom-right"
-          [style.left]="photos[5].left"
-          [style.top]="photos[5].top"
-          [style.width]="photos[5].width"
-          [style.height]="photos[5].height"
-          [style.transform]="'rotate(' + photos[5].rotation + 'deg)'"
-          [style.zIndex]="photos[5].zIndex"
-          [style.animationDelay]="photos[5].animationDelay"
-
-        >
-          <div class="photo-content">
-            <img [src]="photos[5].url" [alt]="'Photo ' + photos[5].id" loading="lazy">
-          </div>
-          <div class="photo-pin"></div>
-        </div>
-
-        <!-- Texte central New Arrivals -->
-        <div class="center-text-overlay">
-          <div class="text-container">
-            <div class="new-arrivals-text">
-              <span class="new">New</span>
-              <span class="arrivals">Arrivals</span>
-            </div>
-            <a href="#" class="shop-now-btn" >
-              <span>Shop Now</span>
-              <i class="fas fa-arrow-right"></i>
-            </a>
-          </div>
+          class="absolute h-full w-1/3 max-w-[120px] bg-[#e8b4b8] rounded transition-all duration-150"
+          [style.left.%]="carouselScrollProgress * 67">
         </div>
       </div>
     </div>
-
-    <div class="mobile-notice" *ngIf="isMobile">
-      <i class="fas fa-mobile-alt"></i>
-      <p>Sur les petits écrans, certaines parties des photos aux extrémités peuvent être coupées pour préserver la composition.</p>
-    </div>
-
-  </main>
-
-</div>
-
-
+  </div>
+</section>
