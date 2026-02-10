@@ -89,9 +89,9 @@ const NEW_ARRIVALS_TABS = [
   styleUrl: './home.component.css'
 })
 export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
-
+  articles: Article[] = [];
   page = 0;
-  size = 12;
+  size = 16;
 
   photos: PhotoCard[] = [];
   leftGroupPhotos: PhotoCard[] = [];
@@ -126,9 +126,12 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 
 
 
-  constructor(private router: Router, private articleService: ArticleService) {}
-
-
+  constructor(private router: Router, private articleService: ArticleService) {
+       this.articleService.getArticles(this.page, this.size)
+                                             .subscribe(res => {
+                                              this.articles = res.content;
+                                               });
+    }
 
 
 

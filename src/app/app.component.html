@@ -245,22 +245,22 @@
 
     <h2>Connexion</h2>
 
-    <form [formGroup]="loginForm" (ngSubmit)="submit()">
+    <form [formGroup]="form" (ngSubmit)="submit()">
 
       <div class="field">
-        <label>Email</label>
-        <input type="email" formControlName="email">
+        <label>Login:</label>
+        <input type="text" formControlName="username" placeholder="Username" />
       </div>
 
       <div class="field">
-        <label>Mot de passe</label>
-        <input type="password" formControlName="password">
+        <label>password</label>
+        <input type="password" formControlName="password" placeholder="Password" />
       </div>
 
-      <button class="submit" type="submit" [disabled]="loginForm.invalid">
-        Se connecter
-      </button>
-
+      <button  class="submit"  type="submit">Connexion</button>
+      <p *ngIf="error" style="color:red">
+        Identifiants incorrects
+      </p>
     </form>
 
   </div>

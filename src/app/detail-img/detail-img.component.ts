@@ -19,7 +19,7 @@ export class DetailImgComponent {
 
   articles: Article[] = [];
     page = 0;
-    size = 8;
+    size = 16;
     totalPages = 0;
     categorie! :string;
 
@@ -35,7 +35,7 @@ export class DetailImgComponent {
               this.articles = res.content;
               this.totalPages = res.totalPages;
                });
-             console.log("1111111111111111111");
+
       }else{
          this.articleService
                       .getByCategorie(this.categorie,this.page, this.size)
@@ -57,6 +57,7 @@ export class DetailImgComponent {
 
     // Fonction appelée quand on clique sur un article
       goToDetail(article: Article) {
+        console.log(article);
         // Redirection vers /detail/1 (exemple)
         this.router.navigate(['/detail', article.id]);
       }

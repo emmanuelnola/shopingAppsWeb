@@ -59,7 +59,8 @@ export class ArticleComponent implements OnInit {
     'Sacs',
     'set',
     'Accessoires',
-    'Montres'
+    'Montres',
+    'drop9'
   ];
 
   // afficher / cacher la liste

@@ -10,19 +10,28 @@ import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { FooterComponent } from './footer/footer.component';
 import { PagePanierComponent  } from './page-panier/page-panier.component';
 import { FormsModule } from '@angular/forms';
+import { AuthService } from './auth/auth.service';
+import {  HttpClientModule,HttpClient } from '@angular/common/http'; // ✅ nécessaire pour this.http
+
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [FormsModule, PagePanierComponent ,RouterOutlet ,CommonModule,RouterModule,ReactiveFormsModule,FooterComponent  ],
+  imports: [FormsModule, PagePanierComponent ,RouterOutlet ,CommonModule,RouterModule,ReactiveFormsModule,FooterComponent,  HttpClientModule  ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
 
 export class AppComponent implements OnInit{
+    error = false;
 
      currentRoute: string = '';
     isScrolled = false;
+
+    form = this.fb.group({
+        username: ['', Validators.required],
+        password: ['', Validators.required]
+      });
 
     @HostListener('window:scroll', [])
     onWindowScroll() {
@@ -149,13 +158,17 @@ export class AppComponent implements OnInit{
       this.cisOpen = false;
     }
 
-    submit() {
-      if (this.loginForm.invalid) return;
-      console.log(this.loginForm.value);
-      this.goToAdminPage();
-      this.cclose();
-    }
 
+   submit() {
+       if (this.form.invalid) return;
+
+       const { username, password } = this.form.value;
+
+       this.authService.login(username!, password!).subscribe({
+         next: () => this.router.navigate(['/admin']),
+         error: () => this.error = true
+       });
+     }
 
 
 
@@ -173,7 +186,7 @@ export class AppComponent implements OnInit{
 
    currentIndex = 0;
 
-  constructor(private cart: PanierService, private fb: FormBuilder,private router: Router) {
+  constructor(private cart: PanierService, private fb: FormBuilder,private authService: AuthService,private router: Router, private http: HttpClient) {
     setInterval(() => {
       this.currentIndex = (this.currentIndex + 1) % this.images.length;
     }, 3000);
@@ -201,6 +214,8 @@ export class AppComponent implements OnInit{
       }, 3000); // passe à la photo suivante toutes les 3 secondes
     }
 
+
+
     next() {
       this.currentIndx = (this.currentIndx + 1) % this.articles.length;
     }
@@ -212,7 +227,7 @@ export class AppComponent implements OnInit{
 
     goToAdminPage() {
 
-        this.router.navigate(['/article']);
+        this.router.navigate(['/admin']);
     }
 
      filteredArticles(){

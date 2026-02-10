@@ -1,54 +1,565 @@
-/* =========================
-   LAYOUT GLOBAL
-========================= */
-.gallery-layout {
-  display: grid;
-  grid-template-columns: 70px minmax(300px, 420px) 320px;
-
-   justify-content: space-between;
-  align-items: start;
-  width: 100%;
-  margin: auto;
-
-
+body{
+  background-color:grey;
 }
 
-/* =========================
-   MINIATURES
-========================= */
-.thumbnails-wrapper {
+.article-page {
+  display: flex;
+  gap: 20px;
+   margin: 0 8%;
+  padding-top:80px;
+}
+
+/* MINIATURES */
+.thumbs {
+  width: 80px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 6px;
 }
 
-.thumbnails {
-  max-height: 320px;
-  overflow-y: auto;
+.thumbs-container {
+  height: 400px;
+  overflow-y: scroll;
   scrollbar-width: none;
 }
-.thumbnails::-webkit-scrollbar {
+.thumbs-container::-webkit-scrollbar {
   display: none;
 }
 
-.thumbnails img {
-  width: 80px;
-  height: 80px;
-  object-fit: cover;
-  border-radius: 10px;
+.thumbs img {
+  width: 60px;
+  margin: 5px 0;
   cursor: pointer;
   opacity: 0.5;
-  transition: all 0.25s ease;
+  border: 2px solid transparent;
 }
-
-.thumbnails img.active {
+.thumbs img.active {
   opacity: 1;
-  outline: 2px solid #111;
+  border-color: #007bff;
+}
+
+/* CAROUSEL */
+.carousel {
+  position: relative;
+  width: 400px;
+}
+
+.main-image {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+}
+
+.nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  border: none;
+  cursor: pointer;
+}
+.nav.left { left: 0; }
+.nav.right { right: 0; }
+
+/* DOTS */
+.dots {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+}
+.dots span {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: gray;
+  margin: 0 5px;
+  cursor: pointer;
+}
+.dots span.active {
+  background: #007bff;
+}
+
+/* INFOS ARTICLE*/
+.article-info {
+  padding: 24px;
+  border-radius: 18px;
+}
+
+.category {
+  font-size: 16px;
+  color: #777;
+
+}
+
+.article-info p {
+  font-size: 28px;
+  margin: 8px 0;
+text-transform: uppercase;
+font-weight: 100;
+opacity:0.8;
+
+
+}
+
+.price {
+  font-size: 22px;
+  font-weight: bold;
+  margin: 16px 0;
+}
+
+.taille{
+  margin-top:150px;
+}
+
+.sizes span {
+  display: inline-block;
+   padding: 4px ;
+   margin:4px;
+  border-radius: 2px;
+  border: 1px solid #ccc;
+}
+.share-container {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  font-family: Arial, sans-serif;
+}
+
+.share-text {
+  font-size: 14px;
+  font-weight: 500;
+  color: #333;
+}
+
+.share-icons {
+  gap: 12px;
+  margin-top:45px;
+display: flex;
+  justify-content: space-between; /* horizontal */
+  align-items: center;
+}
+
+.icon  i{
+  font-weight: 100 !important;
+  background:black;
+  border-radius: 50%;
+  opacity: 0.6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  color: #000;
+  background: #f3f3f3;
+  transition: all 0.3s ease;
+}
+
+
+/* counter.component.css */
+
+.wrapper {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+/* COUNTER */
+.counter-box {
+  display: flex;
+  align-items: center;
+  border: 1px solid black;
+}
+
+.btn {
+  width: 35px;
+  height: 35px;
+  border-radius : 50%;
+  opacity:0.4;
+  background: white;
+  cursor: pointer;
+  font-size: 18px;
+}
+
+.btn:hover {
+  background: black;
+  color: white;
+}
+
+.value {
+  padding: 0 15px;
+  font-weight: bold;
+}
+
+/* ADD BUTTON */
+.add-btn {
+  position: relative;
+  border: 1px solid black;
+  padding: 6px;
+  cursor: pointer;
+color:white;
+background-color:black;
+opacity:0.6;
+font-weight:50;
+
+}
+
+.disabled-icon {
+  display: none;
+  position: absolute;
+  top: 50%;
+  right: 50%;
+}
+
+.add-btn:hover .disabled-icon {
+  display: block;
+}
+
+/* BELOW */
+.below {
+  display: flex;
+  gap: 20px;
+  margin-top: 15px;
+}
+
+/* LIKE */
+.like-box {
+  border: 1px solid black;
+  padding: 8px;
+  cursor: pointer;
+}
+
+.like-box span {
+  font-size: 18px;
+}
+
+.like-box span.active {
+  color: black;
+}
+/* ARROW BOX */
+.arrow-box {
+  width: 60px;
+  height: 60px;
+  border: 1px solid black;
+  cursor: pointer;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  position: relative;
+}
+
+/* FLÈCHES SUPERPOSÉES */
+.arrows {
+  position: relative;
+  width: 24px;
+  height: 24px;
+}
+
+.arrow {
+  position: absolute;
+  left: 0;
+  right: 0;
+  text-align: center;
+  font-size: 18px;
+}
+
+.arrow.up {
+  top: 0;
+}
+
+.arrow.down {
+  top: 0; /* SUPERPOSÉ */
+}
+
+/* POINTILLÉS */
+.circle {
+  width: 30px;
+  height: 30px;
+  border: 2px dashed black;
+  border-radius: 50%;
+}
+
+.animate {
+  animation: spin 1s linear;
+}
+
+/* CHECK */
+.check {
+  font-size: 22px;
+  font-weight: bold;
+}
+
+/* ANIMATION */
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+
+.up {
+  font-weight: bold;
+}
+
+/* MODAL */
+.modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  background: white;
+  padding: 20px;
+  border-radius: 4px;
+}
+
+/* TOAST */
+.toast {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: green;
+  color: white;
+  padding: 10px;
+  border-radius: 4px;
+}
+
+/* FULLSCREEN */
+.fullscreen {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.95);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.fs-image {
+  width: 100vw;
+  height: 100vh;
+  object-fit: contain;
+}
+
+.close {
+  position: fixed;
+  top: 20px;
+  right: 28px;
+  font-size: 34px;
+  background: none;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.fs-arrow {
+  position: fixed;
+  top: 50%;
+  font-size: 48px;
+  background: none;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.fs-arrow.left { left: 30px; }
+.fs-arrow.right { right: 30px; }
+
+/* RESPONSIVE */
+@media (max-width: 900px) {
+  .gallery-container {
+    grid-template-columns: 1fr;
+  }
+  .thumbs-container{
+  display:none;}
+}
+
+
+/*----------------pour le scroll bar-------------------------*/
+.articles-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr); /* Laptop */
+  gap: 24px;
+  padding: 0 8%;
+  margin-top: 80px;
+}
+
+/* Carte article */
+.article-card {
+  background: #fff;
+
+  overflow: hidden;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+    transform: translateY(-4px);
+   /*box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);*/
+
+}
+
+/*.article-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+}*/
+
+/* Image */
+.image-wrappe {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  position :relative;
+
+}
+
+.image-wrappe img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+
+}
+
+/* Infos sous l'image */
+.article-inf {
+  padding: 12px;
+  text-align: center;
+
+}
+
+.decrit {
+opacity: 0.8;
+  font-size: 14px;
+  color: #333;
+  margin-bottom: 6px;
+   text-transform: uppercase;
+}
+
+.prix {
+  font-size: 15px;
+  font-weight: 600;
+  color: #111;
+  opacity: 0.6;
+   text-transform: uppercase;
+}
+
+/* 📱 Smartphone */
+
+/* 📱 Tablette */
+@media (max-width: 1023px) {
+  .articles-grid {
+     grid-template-columns: repeat(3, 1fr);
+  }
+ .option{
+     color:white;
+     background-color: black !important;
+     width:100%;
+     font-size: 15px;
+
+   }
+}
+
+/* 💻 Laptop & desktop */
+@media (min-width: 1024px) {
+  .articles-grid {
+    grid-template-columns: repeat(5, 1fr);
+  }
+
+  .option{
+  display:none;}
 }
 
 
 
+
+.icon1{
+  position: absolute;
+  top:4px;
+  right: 4px;
+
+}
+
+.icon2{
+  position: absolute;
+  top:25px;
+  right: 4px;
+
+}
+
+
+/* conteneur scrollable */
+.articles-scroll {
+  display: flex;
+  gap: 16px;
+
+  overflow-x: auto;
+  overflow-y: hidden;
+   margin: 0 8%;
+  padding: 12px;
+  scroll-behavior: smooth;
+}
+
+/* scrollbar visible */
+.articles-scroll::-webkit-scrollbar {
+  height: 8px;
+}
+
+.articles-scroll::-webkit-scrollbar-track {
+  background: #eee;
+}
+
+.articles-scroll::-webkit-scrollbar-thumb {
+  background: #999;
+  border-radius: 4px;
+    margin: 0 8%;
+}
+
+/* Firefox */
+.articles-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: #EAE2D2;
+}
+
+/* carte article */
+.article-card {
+  min-width: 220px;
+  flex-shrink: 0;
+
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0,0,0,.08);
+  overflow: hidden;
+}
+
+/* image */
+.image-wrappe img {
+  width: 100%;
+  height: 170px;
+  object-fit: cover;
+}
+
+/* infos */
+.info {
+  padding: 10px;
+}
+
+.descriptio {
+  font-size: 14px;
+  margin: 0;
+}
+
+.price {
+  font-weight: bold;
+  margin-top: 6px;
+  color: #000;
+}
+
+
+
+
+
+/*debut mise de coté
 .scroll-btn {
   background: #f2f2f2;
   border: none;
@@ -59,9 +570,9 @@
   font-size: 12px;
 }
 
-/* =========================
+=========================
    IMAGE PRINCIPALE
-========================= */
+=========================
 .main-image {
   display: flex;
   align-items: center;
@@ -72,24 +583,21 @@
   width: 100%;
   height: 500px;
   object-fit: contain;
-  border-radius: 18px;
   cursor: zoom-in;
-  /*background: #f8f8f8;*/
+  /*background: #f8f8f8;
 }
 
 /* =========================
    INFO ARTICLE (DESIGN PRO)
-========================= */
+=========================
 .article-info {
   display: flex;
   flex-direction: column;
   gap: 12px;
   padding: 22px;
-  border-radius: 18px;
-
 }
 
-/* Catégorie */
+/* Catégorie
 .article-info .category {
   font-size: 12px;
   letter-spacing: 1px;
@@ -100,7 +608,7 @@
 /* Nom */
 /* =========================
    ARTICLE INFO – PREMIUM
-========================= */
+=========================
 .article-info {
   display: flex;
   flex-direction: column;
@@ -109,7 +617,7 @@
   border-left: 1px solid #eee;
 }
 
-/* Catégorie */
+/* Catégorie
 .article-info .category {
   font-size: 11px;
   letter-spacing: 1.4px;
@@ -117,7 +625,7 @@
   color: #999;
 }
 
-/* Nom */
+/* Nom
 .article-info h1 {
   font-size: 22px;
   font-weight: 500;
@@ -126,7 +634,7 @@
   line-height: 1.25;
 }
 
-/* Prix */
+/* Prix
 .article-info .price {
   font-size: 26px;
   font-weight: 600;
@@ -144,17 +652,18 @@
   border-radius: 3px;
 }
 
-/* CONTAINER */
+/* CONTAINER
 .gallery-container {
   display: grid;
   grid-template-columns: 90px 1fr 360px;
   gap: 24px;
   max-width: 1200px;
   margin: auto;
+ padding-top:70px;
 
 }
 
-/* MINIATURES */
+/* MINIATURES
 .thumbs-container {
   display: flex;
   flex-direction: column;
@@ -199,30 +708,31 @@
   cursor: pointer;
 }
 
-/* IMAGE PRINCIPALE */
+/* IMAGE PRINCIPALE
 .main-image {
   position: relative;
 }
 
 .main-image img {
   width: 100%;
+  border: 4px black solid;
   height: 480px;
   object-fit: contain;
-  background: #f5f5f5;
+
   border-radius: 18px;
   cursor: zoom-in;
 }
 
-/* FLECHES */
+/* FLECHES
 .arrow {
   position: absolute;
   top: 50%;
-  transform: translateY(-50%);
-  font-size: 32px;
-  background: rgba(0,0,0,0.6);
+  /*transform: translateY(-50%);*/
+/*  font-size: 32px;
+ background: rgba(0,0,0,0.6);
   color: white;
   border: none;
-  width: 48px;
+ width: 48px;
   height: 48px;
   border-radius: 50%;
   cursor: pointer;
@@ -231,7 +741,7 @@
 .arrow.left { left: 10px; }
 .arrow.right { right: 10px; }
 
-/* INFOS ARTICLE */
+/* INFOS ARTICLE
 .article-info {
   background: #fafafa;
   padding: 24px;
@@ -302,7 +812,7 @@
 }*/
 
 /* Optionnel : couleurs au repos */
-.facebook {
+/*.facebook {
   color: g;
   font-size: 15px;
 }
@@ -318,7 +828,7 @@
 }
 
 /* FULLSCREEN */
-.fullscreen {
+/*.fullscreen {
   position: fixed;
   inset: 0;
   background: rgba(0,0,0,0.95);
@@ -359,7 +869,7 @@
 .fs-arrow.right { right: 30px; }
 
 /* RESPONSIVE */
-@media (max-width: 900px) {
+/*@media (max-width: 900px) {
   .gallery-container {
     grid-template-columns: 1fr;
   }
@@ -436,4 +946,243 @@ h2 {
 /*.add-cart-btn{
 background: linear-gradient(90deg, #6366f1, #22d3ee);
   transition: width 0.15s linear;}
+*/
+
+
+/*
+
+  article!:Article;
+  articles: Article[] = [];
+  thumbnailIndex = 0;
+  visibleThumbs = 4;
+
+  categorie= 'set'; /*'set';*/  /* catégorie affichée*/
+ /* page = 0;
+  size = 6;
+  totalPages = 0;
+
+ @ViewChild('thumbs') thumbs!: ElementRef<HTMLDivElement>;
+
+
+
+    constructor(private articleService: ArticleService, private route: ActivatedRoute,private cart: PanierService) {
+
+      const id = Number(this.route.snapshot.paramMap.get('id'));
+           this.articleService.getArticleById(id).subscribe(article => {
+             this.article = article;
+             console.log(article);
+           ;
+           });
+
+    }
+
+  ngOnInit(): void {
+    this.loadArticles();
+
+  }
+
+  addToCart() {
+          this.cart.addToCart(this.article);
+  }
+
+  loadArticles() {
+    this.articleService
+      .getByCategorie(this.categorie, this.page, this.size)
+      .subscribe(res => {
+        this.articles = res.content;
+        this.totalPages = res.totalPages;
+      });
+  }
+
+  nextPage() {
+    if (this.page < this.totalPages - 1) {
+      this.page++;
+      this.loadArticles();
+    }
+  }
+
+  prevPage() {
+    if (this.page > 0) {
+      this.page--;
+      this.loadArticles();
+    }
+  }
+
+
+
+
+
+
+
+  selectedIndex = 0;
+  fullscreen = false;
+
+  /*article = {
+    categorie: 'Chaussures',
+    nom: 'Nike Air Max Pro',
+    prix: 45000,
+    tailles: ['xl', 'l9', '40', '41', 'm', '4xl', '40', '41', 'm', '4xl', '40', '41', 'm', '4xl']
+  };*/
+
+  /*selectImage(index: number) {
+    this.selectedIndex = index;
+    this.scrollToActive();
+  }
+
+  next() {
+    this.selectedIndex =
+      (this.selectedIndex + 1) % this.article.images.length;
+    this.scrollToActive();
+  }
+
+  prev() {
+    this.selectedIndex =
+      (this.selectedIndex - 1 + this.article.images.length) % this.article.images.length;
+    this.scrollToActive();
+  }
+
+  openFullscreen() {
+    this.fullscreen = true;
+    document.body.style.overflow = 'hidden';
+  }
+
+  closeFullscreen() {
+    this.fullscreen = false;
+    document.body.style.overflow = '';
+  }
+
+  scrollThumbs(direction: 'up' | 'down') {
+    this.thumbs.nativeElement.scrollBy({
+      top: direction === 'up' ? -120 : 120,
+      behavior: 'smooth'
+    });
+  }
+
+  scrollToActive() {
+    const el = this.thumbs.nativeElement.children[
+      this.selectedIndex
+    ] as HTMLElement;
+
+    el?.scrollIntoView({
+      behavior: 'smooth',
+      block: 'center'
+    });
+  }*/
+
+
+/*<div class="imgInfo">
+    <div class="gallery-container">
+
+    <!-- MINIATURES -->
+    <div class="thumbs-container">
+      <button class="thumb-nav" (click)="scrollThumbs('up')">▲</button>
+
+      <div class="thumbs" #thumbs>
+        <img
+          *ngFor="let img of article.images; let i = index"
+          [src]="'http://localhost:8080'+img"
+          [class.active]="i === selectedIndex"
+          (click)="selectImage(i)">
+      </div>
+
+      <button class="thumb-nav" (click)="scrollThumbs('down')">▼</button>
+    </div>
+
+    <!-- IMAGE PRINCIPALE -->
+    <div class="main-image">
+      <button class="arrow left" (click)="prev()"><i class="fa fa-arrow-circle-left" aria-hidden="true"></i></button>
+
+      <img
+        [src]="'http://localhost:8080'+article.images[selectedIndex]"
+        (click)="openFullscreen()">
+
+      <button class="arrow right" (click)="next()"><i class="fa fa-arrow-circle-right" aria-hidden="true"></i></button>
+    </div>
+
+    <!-- INFOS ARTICLE -->
+    <div class="article-info">
+      <span class="category">{{ article.categorie }}</span>
+      <h1>{{ article.nom }}</h1>
+      <span class="category">prix unitaire</span>
+      <p class="price">{{ article.prix | number }} FCFA</p>
+      <span class="category">taille</span>
+      <div class="sizes">
+        <span *ngFor="let t of article.tailles">{{ t }}</span>
+      </div>
+      <div class="sizes">
+        <span *ngFor="let t of article.colors">{{ t }}</span>
+      </div>
+
+      <button class="add-cart-btn" (click)="addToCart()">
+        Ajouter au panier
+      </button>
+      <div class="share-container">
+        <span class="share-text">Share</span>
+
+        <div class="share-icons">
+          <a href="#" class="icon facebook">
+            <i class="fa-brands fa-facebook-f"></i>
+          </a>
+
+          <a href="#" class="icon instagram">
+            <i class="fa-brands fa-instagram"></i>
+          </a>
+
+          <a href="#" class="icon whatsapp">
+            <i class="fa-brands fa-whatsapp"></i>
+          </a>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+  </div>
+  <!-- FULLSCREEN -->
+  <div class="fullscreen" *ngIf="fullscreen">
+    <button class="close" (click)="closeFullscreen()">✕</button>
+    <button class="fs-arrow left" (click)="prev()">❮</button>
+
+    <img class="fs-image" [src]="'http://localhost:8080'+article.images[selectedIndex]">
+
+    <button class="fs-arrow right" (click)="next()">❯</button>
+  </div>
+
+
+
+
+
+  <div class="container">
+
+    <h2>Catégorie : {{ categorie }}</h2>
+
+    <div class="grid">
+      <div class="card" *ngFor="let a of articles">
+
+        <img
+          *ngIf="a.images.length"
+          [src]="'http://localhost:8080' + a.images[0]"
+          alt="article">
+
+        <h3>{{ a.nom }}</h3>
+        <p class="price">{{ a.prix }} FCFA</p>
+
+      </div>
+    </div>
+
+    <div class="pagination">
+      <button (click)="prevPage()" [disabled]="page === 0">
+        ⬅ Précédent
+      </button>
+
+      <span>Page {{ page + 1 }} / {{ totalPages }}</span>
+
+      <button
+        (click)="nextPage()"
+        [disabled]="page === totalPages - 1">
+        Suivant ➡
+      </button>
+    </div>
+
+  </div>
 */

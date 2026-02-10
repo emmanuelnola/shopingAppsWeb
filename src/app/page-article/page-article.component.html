@@ -1,38 +1,51 @@
-<div class="gallery-container">
+<div class="article-page" *ngIf="article">
+
 
   <!-- MINIATURES -->
-  <div class="thumbs-container">
-    <button class="thumb-nav" (click)="scrollThumbs('up')">▲</button>
+  <div class="thumbs">
 
-    <div class="thumbs" #thumbs>
+    <button (click)="scrollThumbs('up', thumbs)">▲</button>
+
+    <div class="thumbs-container" #thumbs>
       <img
         *ngFor="let img of article.images; let i = index"
-        [src]="'http://51.254.138.51:8080'+img"
-        [class.active]="i === selectedIndex"
-        (click)="selectImage(i)">
+        [src]="'http://localhost:8080'+img"
+        [class.active]="i === currentIndex"
+        (click)="goTo(i)"
+      />
     </div>
 
-    <button class="thumb-nav" (click)="scrollThumbs('down')">▼</button>
+    <button (click)="scrollThumbs('down', thumbs)">▼</button>
   </div>
 
-  <!-- IMAGE PRINCIPALE -->
-  <div class="main-image">
-    <button class="arrow left" (click)="prev()">❮</button>
+  <!-- CAROUSEL -->
+  <div class="carousel">
+    <i class="fa fa-arrow-circle-left nav left" aria-hidden="true" (click)="prev()"></i>
 
     <img
-      [src]="'http://51.254.138.51:8080'+article.images[selectedIndex]"
-      (click)="openFullscreen()">
+      class="main-image"
+      [src]="'http://localhost:8080' + article.images[currentIndex]"
+      (click)="openFullscreen()"
+    />
+    <i class="fa nav right fa-arrow-circle-right" aria-hidden="true" (click)="next()"></i>
 
-    <button class="arrow right" (click)="next()">❯</button>
+
+    <!-- CERCLES -->
+    <div class="dots">
+      <span
+        *ngFor="let img of article.images; let i = index"
+        [class.active]="i === currentIndex"
+        (click)="goTo(i)"
+      ></span>
+    </div>
   </div>
 
   <!-- INFOS ARTICLE -->
   <div class="article-info">
     <span class="category">{{ article.categorie }}</span>
-    <h1>{{ article.nom }}</h1>
-    <span class="category">prix unitaire</span>
-    <p class="price">{{ article.prix | number }} FCFA</p>
-    <span class="category">taille</span>
+    <p>{{ article.nom }}</p>
+    <p class="price">₦{{ article.prix | number }} </p>
+    <span class="taille">size</span>
     <div class="sizes">
       <span *ngFor="let t of article.tailles">{{ t }}</span>
     </div>
@@ -40,75 +53,115 @@
       <span *ngFor="let t of article.colors">{{ t }}</span>
     </div>
 
-    <button class="add-cart-btn" (click)="addToCart()">
-      Ajouter au panier
-    </button>
+     <div>
+         <!-- counter.component.html -->
+         <div class="wrapper">
+
+        <!-- COMPTEUR -->
+        <div class="counter-box">
+          <button class="btn minus" (click)="decrement()">−</button>
+          <span class="value">{{ quantity }}</span>
+          <button class="btn plus" (click)="increment()">+</button>
+        </div>
+
+        <!-- ADD BUTTON -->
+        <button class="add-btn" (click)="addToCart()">
+          Add to card <i class="fa fa-shopping-bag" aria-hidden="true"></i>
+          <span class="disabled-icon">🚫</span>
+        </button>
+
+      </div>
+
+         <!-- MESSAGE SOUS -->
+         <div class="below">
+
+        <!-- LIKE -->
+        <div class="like-box" (click)="toggleLike()">
+          <span [class.active]="liked">❤</span>
+          <small>Add to wishlist</small>
+        </div>
+
+        <!-- FLÈCHES SUPERPOSÉES -->
+        <div class="arrows" *ngIf="arrowState === 'idle'">
+          <span class="arrow up">⬆</span>
+          <span class="arrow down">⬇</span>
+        </div>
+
+        <!-- POINTILLÉS -->
+        <div class="circle animate" *ngIf="arrowState === 'loading'"></div>
+
+        <!-- CHECK -->
+        <div class="check" *ngIf="arrowState === 'done'">✔</div>
+
+      </div>
+     </div>
+
+       <!-- MODAL -->
+       <div class="modal" *ngIf="showModal">
+        <div class="modal-content">
+          <p>please select some product</p>
+          <button (click)="closeModal()">OK</button>
+        </div>
+      </div>
+
+       <!-- TOAST -->
+       <div class="toast" *ngIf="showToast">
+        Added to wishlist ❤️
+      </div>
+
+     <p> <span class="share-text">SKU: N/A</span></p>
+     <p><span class="share-text">categorie: {{ article.categorie }}</span></p>
+
     <div class="share-container">
-      <span class="share-text">Share</span>
+
+      <span class="share-text">Share :</span>
 
       <div class="share-icons">
-        <a href="#" class="icon facebook">
-          <i class="fa-brands fa-facebook-f"></i>
+        <a href="#" class="icon facebook ">
+          <i class="fa-brands fa-facebook-f  fa-thin fa-sm" ></i>
         </a>
 
         <a href="#" class="icon instagram">
-          <i class="fa-brands fa-instagram"></i>
+          <i class="fa-brands fa-instagram fa-sm fa-thin"></i>
         </a>
 
         <a href="#" class="icon whatsapp">
-          <i class="fa-brands fa-whatsapp"></i>
+          <i class="fa-brands fa-whatsapp fa-sm pd-10 fa-thin"></i>
         </a>
       </div>
     </div>
 
-  </div>
+     </div>
 
-</div>
+
+
+  </div>
 
 <!-- FULLSCREEN -->
 <div class="fullscreen" *ngIf="fullscreen">
   <button class="close" (click)="closeFullscreen()">✕</button>
   <button class="fs-arrow left" (click)="prev()">❮</button>
 
-  <img class="fs-image" [src]="'http://51.254.138.51:8080'+article.images[selectedIndex]">
+  <img class="fs-image" [src]="'http://localhost:8080'+article.images[currentIndex]">
 
   <button class="fs-arrow right" (click)="next()">❯</button>
 </div>
 
 
 
+<div class="articles-scroll">
 
+  <div class="article-card" *ngFor="let article of articles">
 
-<div class="container">
-
-  <h2>Catégorie : {{ categorie }}</h2>
-
-  <div class="grid">
-    <div class="card" *ngFor="let a of articles">
-
-      <img
-        *ngIf="a.images.length"
-        [src]="'http://51.254.138.51:8080' + a.images[0]"
-        alt="article">
-
-      <h3>{{ a.nom }}</h3>
-      <p class="price">{{ a.prix }} FCFA</p>
-
+    <div class="image-wrappe">
+      <img class="fs-image" [src]="'http://localhost:8080'+article.images[0]">
     </div>
-  </div>
 
-  <div class="pagination">
-    <button (click)="prevPage()" [disabled]="page === 0">
-      ⬅ Précédent
-    </button>
+    <div class="info">
+      <p class="descriptio">{{ article.nom }}</p>
+      <p class="price">{{ article.prix }} FCFA</p>
+    </div>
 
-    <span>Page {{ page + 1 }} / {{ totalPages }}</span>
-
-    <button
-      (click)="nextPage()"
-      [disabled]="page === totalPages - 1">
-      Suivant ➡
-    </button>
   </div>
 
 </div>

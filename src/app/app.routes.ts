@@ -4,7 +4,7 @@ import { PageArticleComponent } from './page-article/page-article.component';
 import { PagePanierComponent  } from './page-panier/page-panier.component';
 import { ArticleComponent  } from './article/article.component';
 import { DetailImgComponent } from './detail-img/detail-img.component';
-
+import { adminGuard } from './auth/admin.guard';
 
 
 export const routes: Routes = [
@@ -13,7 +13,7 @@ export const routes: Routes = [
     { path: 'articles/:message', component: DetailImgComponent },
     { path: 'detail/:id', component: PageArticleComponent },
    /* { path: 'cart', component: PagePanierComponent  },*/
-    { path: 'article', component: ArticleComponent  },
+    { path: 'admin', component: ArticleComponent ,canActivate: [adminGuard] },
     // optionnel
     { path: '', redirectTo: '/home', pathMatch: 'full' },
 

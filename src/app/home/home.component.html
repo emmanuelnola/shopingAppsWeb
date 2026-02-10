@@ -5,6 +5,99 @@
   <a href="https://berbiebeauty.com/product-category/drop-10/" class="w-full h-screen block cursor-pointer"></a>
 </div>
 
+<div class="gallery">
+  <!-- Image 1 -->
+  <div class="card new">
+    <img src="/assets/A1.jpg" alt="image 1">
+    <span class="badge">NEW</span>
+
+    <div class="overlay">
+      <p>Texte 1</p>
+      <span class="arrow">➜</span>
+    </div>
+  </div>
+
+  <!-- Image 2 -->
+  <div class="card">
+    <img src="/assets/a.jpg" alt="image 2">
+    <div class="overlay">
+      <p>Texte 2</p>
+      <span class="arrow">➜</span>
+    </div>
+  </div>
+
+  <!-- Image 3 -->
+  <div class="card">
+    <img src="/assets/culotte2.jpg" alt="image 3">
+    <div class="overlay">
+      <p>Texte 3</p>
+      <span class="arrow">➜</span>
+    </div>
+  </div>
+
+  <!-- Image 4 -->
+  <div class="card">
+    <img src="/assets/A4.jpg" alt="image 4">
+    <div class="overlay">
+      <p>Texte 4</p>
+      <span class="arrow">➜</span>
+    </div>
+  </div>
+
+  <!-- Image 5 -->
+  <div class="card">
+    <img src="/assets/A5.jpg" alt="image 5">
+    <div class="overlay">
+      <p>Texte 5</p>
+      <span class="arrow">➜</span>
+    </div>
+  </div>
+</div>
+
+
+
+
+<div class="section">
+  <h1 class="title">Discover Our New Arrivals</h1>
+
+  <div class="gallery1">
+    <div class="item up">
+      <img src="/assets/A6.jpg" alt="">
+      <p class="desc">Chaussure moderne</p>
+      <strong class="price">25 000 FCFA</strong>
+    </div>
+
+    <div class="item down">
+      <img src="/assets/A3.jpg" alt="">
+      <p class="desc">Sac en cuir</p>
+      <strong class="price">40 000 FCFA</strong>
+    </div>
+
+    <div class="item">
+      <img src="/assets/A7.jpg" alt="">
+      <p class="desc">Montre élégante</p>
+      <strong class="price">60 000 FCFA</strong>
+    </div>
+
+    <div class="item up">
+      <img src="/assets/A8.jpg" alt="">
+      <p class="desc">Chemise premium</p>
+      <strong class="price">18 000 FCFA</strong>
+    </div>
+
+    <div class="item down">
+      <img src="/assets/A9.jpg" alt="">
+      <p class="desc">Lunettes stylées</p>
+      <strong class="price">12 000 FCFA</strong>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
 <!-- New Arrivals: titre + tabs + carousel -->
 <section class="w-full py-12 md:py-16">
   <div class="max-w-6xl !mx-auto px-4">
@@ -97,6 +190,105 @@
           [style.left.%]="carouselScrollProgress * 67">
         </div>
       </div>
+    </div>
+  </div>
+</section>
+
+
+
+<div class="newDrop" >
+  <h1 class="TitleNewdrop">New Drop</h1>
+  <div class="articles-grid">
+
+    <div class="article-card" *ngFor="let article of articles" (click)="goToDetail(article)">
+
+      <div class="image-wrapper">
+
+        <img [src]="'http://localhost:8080' + article.images[0]" alt="{{ article.nom }}">
+        <i class="far fa-heart text-black icon1"></i>
+        <i class="fa fa-eye icon2"></i>
+      </div>
+
+      <!-- Description sous l'image -->
+      <div class="article-info">
+
+        <p class="description">{{ article.nom }}</p>
+        <p class="price">{{ article.prix }} FCFA</p>
+        <p class="option">Select options</p>
+        <p>Quick View</p>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+<section class="categories-section">
+  <h2 class="section-title">Nos Catégories Populaires</h2>
+
+  <div class="items-wrapper">
+    <div class="item-box">
+      <div class="item-left">
+        <img src="/assets/culotte.jpg" alt="icon" />
+        <span>Homme</span>
+      </div>
+      <div class="item-arrow">➜</div>
+    </div>
+
+    <div class="item-box">
+      <div class="item-left">
+        <img src="/assets/culotte.jpg" alt="icon" />
+        <span>Femme</span>
+      </div>
+      <div class="item-arrow">➜</div>
+    </div>
+
+    <div class="item-box">
+      <div class="item-left">
+        <img src="/assets/culotte.jpg" alt="icon" />
+        <span>Enfant</span>
+      </div>
+      <div class="item-arrow">➜</div>
+    </div>
+
+    <div class="item-box">
+      <div class="item-left">
+        <img src="/assets/culotte.jpg" alt="icon" />
+        <span>Sport</span>
+      </div>
+      <div class="item-arrow">➜</div>
+    </div>
+
+    <div class="item-box">
+      <div class="item-left">
+        <img src="/assets/culotte.jpg" alt="icon" />
+        <span>Chaussures</span>
+      </div>
+      <div class="item-arrow">➜</div>
+    </div>
+
+    <div class="item-box">
+      <div class="item-left">
+        <img src="/assets/culotte.jpg" alt="icon" />
+        <span>Accessoires</span>
+      </div>
+      <div class="item-arrow">➜</div>
+    </div>
+
+    <div class="item-box">
+      <div class="item-left">
+        <img src="/assets/culotte.jpg" alt="icon" />
+        <span>Nouveautés</span>
+      </div>
+      <div class="item-arrow">➜</div>
+    </div>
+
+    <div class="item-box">
+      <div class="item-left">
+        <img src="/assets/culotte.jpg" alt="icon" />
+        <span>Promotions</span>
+      </div>
+      <div class="item-arrow">➜</div>
     </div>
   </div>
 </section>
